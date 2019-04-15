@@ -8,4 +8,5 @@
     <string name="favorite_tab_name">My Topics</string>
     <string name="quotes_tab_name">Quotes</string>
     <string name="title_activity_temp">Temp</string>
+    <string name="get_more_quote">Fetching more quotes</string>
 </resources>

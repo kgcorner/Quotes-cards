@@ -39,6 +39,8 @@ public class QuoteCardAdapter extends ArrayAdapter<Quote> {
 
         ViewHolder viewHolder = null;
         Quote quote = getItem(position);
+        if(quote == null)
+            return null;
         if(convertView == null) {
 
             Context context = parent.getContext();

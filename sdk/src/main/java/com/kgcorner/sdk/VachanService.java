@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface VachanService {
@@ -13,9 +14,9 @@ public interface VachanService {
     @GET("/quotes")
     Observable<List<Quote>> getQuotes();
 
-    @GET("/quotes")
-    Observable<List<Quote>> getQuotes(@Query("page") int maxItems);
+    @GET("/quotes/{page}")
+    Observable<List<Quote>> getQuotes(@Path("page") int page);
 
-    @GET("/categories")
+    @GET("/topics")
     Observable<List<Topic>> getTopics();
 }

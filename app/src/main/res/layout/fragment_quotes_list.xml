@@ -18,6 +18,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="10dp"
+        app:top_swipe_detect="false"
         app:bottom_swipe_detect="false"
         app:rotation_degrees="15.5"
         tools:context=".CardSwipeActivity" />

@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
 import com.kgcorner.vachan.BaseApplication;
 import com.kgcorner.vachan.R;
+import com.kgcorner.vachan.io.Store;
 import com.kgcorner.vachan.viewers.listview.viewholder.quotes.QuoteCardAdapter;
 
 import java.util.ArrayList;
@@ -29,8 +31,6 @@ import in.arjsna.swipecardlib.SwipeCardView;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link QuotesListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link QuotesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class QuotesListFragment extends Fragment implements QuotesView {
@@ -49,12 +49,10 @@ public class QuotesListFragment extends Fragment implements QuotesView {
 
     private List<Quote> quotes = new ArrayList<>();
     private ArrayAdapter<Quote> quotesAdapter = null;
+    private Store store;
+
     public QuotesListFragment() {
         // Required empty public constructor
-    }
-    public static QuotesListFragment newInstance() {
-        QuotesListFragment fragment = new QuotesListFragment();
-        return fragment;
     }
 
     @Override
@@ -63,6 +61,8 @@ public class QuotesListFragment extends Fragment implements QuotesView {
         ((BaseApplication) getActivity().getApplication())
                 .getAppComponent().inject(this);
         presenter.setView(this);
+        if(store == null)
+            store = ((BaseApplication) getActivity().getApplication()).getStore();
     }
 
     @Override
@@ -70,10 +70,14 @@ public class QuotesListFragment extends Fragment implements QuotesView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quotes_list, container, false);
-        presenter.getQuotes();
+        //presenter.getQuotes(store.getLatestFetchedPage());
         unbinder = ButterKnife.bind(this, view);
         quotesAdapter = new QuoteCardAdapter(getContext(), R.layout.quote_card, quotes);
         quoteContainer.setAdapter(quotesAdapter);
+
+        int minCardExpected = getContext().getResources()
+                .getInteger(R.integer.min_card_count_in_stack);
+        quoteContainer.setMinStackInAdapter(minCardExpected);
         setFlingListener();
         return view;
     }
@@ -82,17 +86,18 @@ public class QuotesListFragment extends Fragment implements QuotesView {
         quoteContainer.setFlingListener(new SwipeCardView.OnCardFlingListener() {
             @Override
             public void onCardExitLeft(Object dataObject) {
-                quotes.remove(dataObject);
             }
 
             @Override
             public void onCardExitRight(Object dataObject) {
-                quotes.remove(dataObject);
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 Log.d(TAG, "onAdapterAboutToEmpty: Adapter is about to empty");
+                presenter.getQuotes(store.getLatestFetchedPage());
+                String toastText = getContext().getString(R.string.get_more_quote);
+                Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -149,6 +154,9 @@ public class QuotesListFragment extends Fragment implements QuotesView {
         if(quotes != null || quotes.size()>0) {
             this.quotes.addAll(quotes);
             this.quotesAdapter.notifyDataSetChanged();
+            int page = store.getLatestFetchedPage();
+            page++;
+            store.setLatestFetchPage(page);
         }
     }
 

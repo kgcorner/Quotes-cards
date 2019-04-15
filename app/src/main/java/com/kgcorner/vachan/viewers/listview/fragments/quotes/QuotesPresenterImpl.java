@@ -17,14 +17,15 @@ public class QuotesPresenterImpl implements QuotesPresenter {
     private QuotesInteractor interactor;
     private List<Quote> quotes;
     private int page = 1;
+
     public QuotesPresenterImpl(QuotesInteractor interactor) {
         this.interactor = interactor;
         this.quotes = new ArrayList<>();
     }
 
     @Override
-    public void getQuotes() {
-        this.interactor.getQuotes(page)
+    public void getQuotes(int page) {
+        this.interactor.getQuotes(this.page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onQuotesLoadSuccess, this::onQuotesLoadFailure);

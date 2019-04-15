@@ -22,10 +22,12 @@ public class RequestInterceptor implements Interceptor {
 
     @Inject
     RequestInterceptor() {}
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         Request newRequest = original.newBuilder().addHeader(VERSION_HEADER, VERSION).build();
+
         return chain.proceed(newRequest);
     }
 }
