@@ -54,7 +54,10 @@ public class Store {
             } catch (FileReadFailedException x) {
                 Log.e(TAG, "getInstance: "+x.getLocalizedMessage(), x);
             }
+        } else {
+            instance.favQuotes = new ArrayList<>();
         }
+
         instance.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return instance;
     }
@@ -66,6 +69,12 @@ public class Store {
     public void setLatestFetchPage(int page) {
         sharedPreferences.edit().putInt(LATEST_PAGE, page);
         latestPage = page;
+    }
+
+    public void saveFavQuotes() {
+        Log.d(TAG, "saveFavQuotes: Saving quotes");
+        writeData(favQuotes, FAV_FILE);
+        Log.d(TAG, "saveFavQuotes: Saved quotes");
     }
 
     /**
@@ -85,6 +94,12 @@ public class Store {
      */
     public void addToFav(Quote quote) {
         favQuotes.add(quote);
+        new Thread() {
+            @Override
+            public void run() {
+                writeData(favQuotes, FAV_FILE);
+            }
+        };
     }
 
 
@@ -94,6 +109,12 @@ public class Store {
      */
     public void removeFromFav(Quote quote) {
         favQuotes.remove(quote);
+        new Thread() {
+            @Override
+            public void run() {
+                writeData(favQuotes, FAV_FILE);
+            }
+        };
     }
 
     /**

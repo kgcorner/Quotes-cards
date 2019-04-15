@@ -17,6 +17,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         appComponent = createAppComponent();
         store = Store.getInstance(getBaseContext());
+        registerShutDownHook();
     }
 
     private AppComponent createAppComponent() {
@@ -33,5 +34,17 @@ public class BaseApplication extends Application {
      */
     public Store getStore() {
         return store;
+    }
+
+    /**
+     * Registers a shutdown hook
+     */
+    private void registerShutDownHook () {
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                store.saveFavQuotes();
+            }
+        });
     }
 }
