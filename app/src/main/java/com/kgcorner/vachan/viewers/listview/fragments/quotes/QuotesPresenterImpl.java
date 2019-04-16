@@ -15,30 +15,22 @@ public class QuotesPresenterImpl implements QuotesPresenter {
     private static final String TAG = "QuotesPresenterImpl";
     private QuotesView view;
     private QuotesInteractor interactor;
-    private List<Quote> quotes;
-    private int page = 1;
 
     public QuotesPresenterImpl(QuotesInteractor interactor) {
         this.interactor = interactor;
-        this.quotes = new ArrayList<>();
     }
 
     @Override
     public void getQuotes(int page) {
-        this.interactor.getQuotes(this.page)
+        this.interactor.getQuotes(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onQuotesLoadSuccess, this::onQuotesLoadFailure);
     }
 
     private void onQuotesLoadSuccess(List<Quote> quotes) {
-        if(quotes == null) {
-            this.quotes = quotes;
-        } else {
-            this.quotes.addAll(quotes);
-        }
         if(isViewAttached())
-            view.loadQuotes(this.quotes);
+            view.loadQuotes(quotes);
     }
 
     private void onQuotesLoadFailure(Throwable e) {

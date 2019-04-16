@@ -153,11 +153,14 @@ public class QuotesListFragment extends Fragment implements QuotesView {
     public void loadQuotes(List<Quote> quotes) {
         if(quotes != null || quotes.size()>0) {
             this.quotes.addAll(quotes);
-            this.quotesAdapter.notifyDataSetChanged();
-            int page = store.getLatestFetchedPage();
-            page++;
-            store.setLatestFetchPage(page);
+        } else {
+            quotes = new ArrayList<>();
         }
+        this.quotesAdapter.notifyDataSetChanged();
+        int page = store.getLatestFetchedPage();
+        page++;
+        store.setLatestFetchPage(page);
+
     }
 
     @Override

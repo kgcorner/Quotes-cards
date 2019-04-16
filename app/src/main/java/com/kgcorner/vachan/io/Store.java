@@ -25,6 +25,7 @@ public class Store {
     private static final Object obj = new Object();
 
     private static final String TAG = "Store";
+    private static final String PREF_NAME = "LatestPageStore";
     private Context context;
 
     private static Store instance;
@@ -51,23 +52,29 @@ public class Store {
         if(instance.fileExists(FAV_FILE)) {
             try {
                 instance.favQuotes = (List<Quote>) instance.readData(FAV_FILE);
-            } catch (FileReadFailedException x) {
+            } catch (Exception x) {
                 Log.e(TAG, "getInstance: "+x.getLocalizedMessage(), x);
             }
-        } else {
-            instance.favQuotes = new ArrayList<>();
         }
+        if(instance.favQuotes == null)
+            instance.favQuotes = new ArrayList<>();
 
-        instance.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        instance.sharedPreferences = context.getApplicationContext()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return instance;
     }
 
+    public static Store getInstance() {
+        return instance;
+    }
     /**
      * Set the last read page from Vachan Server
      * @param page
      */
     public void setLatestFetchPage(int page) {
-        sharedPreferences.edit().putInt(LATEST_PAGE, page);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(LATEST_PAGE, page);
+        editor.apply();
         latestPage = page;
     }
 
@@ -99,7 +106,7 @@ public class Store {
             public void run() {
                 writeData(favQuotes, FAV_FILE);
             }
-        };
+        }.start();
     }
 
 
@@ -114,7 +121,7 @@ public class Store {
             public void run() {
                 writeData(favQuotes, FAV_FILE);
             }
-        };
+        }.start();
     }
 
     /**
@@ -122,6 +129,8 @@ public class Store {
      * @return
      */
     public List<Quote> getFavQuotes() {
+        if(favQuotes == null)
+            return Collections.emptyList();
         return Collections.unmodifiableList(favQuotes);
     }
 

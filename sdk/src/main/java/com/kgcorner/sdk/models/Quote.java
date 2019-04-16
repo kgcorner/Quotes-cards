@@ -1,16 +1,18 @@
 package com.kgcorner.sdk.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Represents a quote
  */
-public class Quote {
+public class Quote implements Serializable {
 
     private String quote;
     private String author;
     private Date dateAdded;
+    private int id;
 
     /**
      * returns the quote itself
@@ -48,4 +50,20 @@ public class Quote {
         this.dateAdded = dateAdded;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Quote)) {
+            return false;
+        }
+        Quote quote = (Quote) obj;
+        return id == quote.id;
+    }
 }
