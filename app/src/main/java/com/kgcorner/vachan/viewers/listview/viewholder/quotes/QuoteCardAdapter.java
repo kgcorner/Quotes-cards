@@ -1,19 +1,40 @@
 package com.kgcorner.vachan.viewers.listview.viewholder.quotes;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
 import com.kgcorner.vachan.R;
 import com.kgcorner.vachan.io.Store;
+import com.kgcorner.vachan.viewers.ShareActivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.nio.file.Path;
 import java.util.List;
 
 public class QuoteCardAdapter extends ArrayAdapter<Quote> {
@@ -54,6 +75,7 @@ public class QuoteCardAdapter extends ArrayAdapter<Quote> {
             viewHolder.txtAuthor = convertView.findViewById(R.id.txtAuthor);
             viewHolder.txtQuote =  convertView.findViewById(R.id.txtQuote);
             viewHolder.imgLike = convertView.findViewById(R.id.imgLike);
+            viewHolder.imgShare = convertView.findViewById(R.id.imgShare);
             if(store.getFavQuotes().contains(quote)) {
                 viewHolder.imgLike.setImageDrawable(getContext()
                         .getDrawable(R.drawable.likefilled));
@@ -64,12 +86,14 @@ public class QuoteCardAdapter extends ArrayAdapter<Quote> {
                 viewHolder.imgLike.setTag(R.drawable.like);
             }
             setLikeClickListener(viewHolder.imgLike, quote);
+            setShareClickListener(viewHolder.imgShare, quote);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.txtAuthor.setText(quote.getAuthor());
         viewHolder.txtQuote.setText(quote.getQuote());
+
         /*QuoteCardView view = new QuoteCardView(context, convertView);
         view.setQuote(getItem(position));
         view.populate();*/
@@ -102,6 +126,23 @@ public class QuoteCardAdapter extends ArrayAdapter<Quote> {
             }
         });
     }
+
+
+
+    private void setShareClickListener(ImageView imgShare, Quote quote) {
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Quote", quote);
+                Intent intent = new Intent(context, ShareActivity.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+
 
     @Override
     public int getCount() {
