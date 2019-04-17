@@ -27,14 +27,19 @@ android {
         buildConfigField "String", "APP_NAME", "\"Android-client\""
     }
     buildTypes {
-
         debug {
             buildConfigField "String", 'API_BASE_URL', "\"${getProperty("local.properties", "local.url")}\""
+        }
+        stage {
+            buildConfigField "String", 'API_BASE_URL', "\"${getProperty("local.properties", "stage.url")}\""
+            debuggable true
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", 'API_BASE_URL', "\"${getProperty("local.properties", "prod.url")}\""
+        }
+        stage {
         }
     }
     compileOptions {
@@ -51,36 +56,27 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
-
     //Dagger dependencies
     implementation 'com.google.dagger:dagger:2.22.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.22.1'
-
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
     //Swipe cards
     implementation 'in.arjsna:swipecardlib:1.0.2'
-
     //Network
     implementation 'com.squareup.okhttp3:okhttp:3.14.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.0'
-
     //color picker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
-
     //For view binding
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     //For testing
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.9.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.14.0'
-
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     //SDK ofcourse
     implementation project(':sdk')
 }
