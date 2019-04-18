@@ -2,6 +2,8 @@ package com.kgcorner.vachan.viewers.favouritecard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
@@ -26,6 +28,9 @@ public class FavouriteCardsActivity extends AppCompatActivity {
     @BindView(R.id.quotesContainer)
     SwipeCardView quotesContainer;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private Unbinder unbinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,13 @@ public class FavouriteCardsActivity extends AppCompatActivity {
         setSwipeCardFlingListener();
         quotesContainer.setAdapter(adapter);
         quotesContainer.setMinStackInAdapter(1);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
