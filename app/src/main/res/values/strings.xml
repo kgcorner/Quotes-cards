@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Quote Cards</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_quotes_list">Quotes Cards</string>
 
@@ -9,4 +9,29 @@
     <string name="quotes_tab_name">Quotes</string>
     <string name="title_activity_temp">Temp</string>
     <string name="get_more_quote">Fetching more quotes</string>
+    <string name="share_quote_dialog_title">Share Quote</string>
+    <string name="share_quote_activity_title">Share Quote</string>
+    <string name="favourites">Favourite Quotes</string>
+    <string name="rate_us">Rate us on Play store</string>
+    <string name="credits">Credits</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="drawer_close">close</string>
+    <string name="drawer_open">open</string>
+    <string name="packagename">com.kgcorner.vachan</string>
+    <string name="favourite_quote_activity_title">Favourite Quotes</string>
+
+    <string-array name="nav_drawer_labels">
+        <item>@string/favourites</item>
+        <item>@string/rate_us</item>
+        <item>@string/credits</item>
+        <item>@string/terms_of_use</item>
+    </string-array>
+
+    <string-array name="nav_drawer_icon">
+        <item>@drawable/likefilled</item>
+        <item>@drawable/rate</item>
+        <item>@drawable/credit</item>
+        <item>@drawable/terms</item>
+    </string-array>
+
 </resources>

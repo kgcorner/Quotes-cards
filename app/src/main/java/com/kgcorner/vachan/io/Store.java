@@ -1,235 +1,74 @@
 package com.kgcorner.vachan.io;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import com.kgcorner.sdk.models.Quote;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-/**
- * Store is responsible for favorite quotes by writing them on physical storage
- */
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
+@Singleton
 public class Store {
 
-    private static final String FAV_FILE = "fav.ser";
-    private static final String LATEST_PAGE = "LATEST_PAGE";
-    private static final Object obj = new Object();
-
-    private static final String TAG = "Store";
-    private static final String PREF_NAME = "LatestPageStore";
-    private Context context;
-
-    private static Store instance;
-    private SharedPreferences sharedPreferences;
-    private int latestPage;
-
-    private Store(){
-
-    }
-
-    private List<Quote> favQuotes;
+    private final Realm realm;
 
     /**
-     * Return instance of Store
-     * @param context
+     * Creates instance of Store
+     * @param realm
+     */
+    @Inject
+    public Store(Realm realm) {
+        this.realm = realm;
+    }
+
+    /**
+     * returns true if quote is listed in favourites
+     * @param quote
      * @return
      */
-    public static Store getInstance(Context context) {
-        if(instance != null) {
-            return  instance;
-        }
-        instance = new Store();
-        instance.context = context;
-        if(instance.fileExists(FAV_FILE)) {
-            try {
-                instance.favQuotes = (List<Quote>) instance.readData(FAV_FILE);
-            } catch (Exception x) {
-                Log.e(TAG, "getInstance: "+x.getLocalizedMessage(), x);
-            }
-        }
-        if(instance.favQuotes == null)
-            instance.favQuotes = new ArrayList<>();
-
-        instance.sharedPreferences = context.getApplicationContext()
-                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return instance;
-    }
-
-    public static Store getInstance() {
-        return instance;
-    }
-    /**
-     * Set the last read page from Vachan Server
-     * @param page
-     */
-    public void setLatestFetchPage(int page) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(LATEST_PAGE, page);
-        editor.apply();
-        latestPage = page;
-    }
-
-    public void saveFavQuotes() {
-        Log.d(TAG, "saveFavQuotes: Saving quotes");
-        writeData(favQuotes, FAV_FILE);
-        Log.d(TAG, "saveFavQuotes: Saved quotes");
+    public boolean isFavourite(Quote quote) {
+        return realm.where(QuoteRealMObject.class)
+                .equalTo(QuoteRealMObject.ID, quote.getId()).findFirst() != null;
     }
 
     /**
-     * Get the last read page from Vachan Server
+     * Returns list of favourite quotes
      * @return
      */
-    public int getLatestFetchedPage() {
-        if(latestPage == 0)
-            return sharedPreferences.getInt(LATEST_PAGE, 1);
-        else
-            return latestPage;
+    public List<Quote> getFavouriteQuotes() {
+        RealmResults<QuoteRealMObject> quoteRealMObjects = realm.where(QuoteRealMObject.class).findAll();
+        List<Quote> quotes = new ArrayList<>();
+        for(QuoteRealMObject object : quoteRealMObjects) {
+            quotes.add(object.readlMToQuote());
+        }
+        return quotes;
     }
 
     /**
-     * Adds a quote to list of fav quotes
+     * Add quotes to list of favourite quotes
      * @param quote
      */
-    public void addToFav(Quote quote) {
-        favQuotes.add(quote);
-        new Thread() {
-            @Override
-            public void run() {
-                writeData(favQuotes, FAV_FILE);
-            }
-        }.start();
+    public void addToFavourite(Quote quote) {
+        QuoteRealMObject object = new QuoteRealMObject(quote);
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(object);
+        realm.commitTransaction();
     }
 
-
     /**
-     * Removes quote from list of fav quotes
+     * Remove a quote from list of favourite quote
      * @param quote
      */
-    public void removeFromFav(Quote quote) {
-        favQuotes.remove(quote);
-        new Thread() {
-            @Override
-            public void run() {
-                writeData(favQuotes, FAV_FILE);
-            }
-        }.start();
-    }
-
-    /**
-     * Returns saved fav quotes
-     * @return
-     */
-    public List<Quote> getFavQuotes() {
-        if(favQuotes == null)
-            return Collections.emptyList();
-        return Collections.unmodifiableList(favQuotes);
-    }
-
-    /**
-     * Check if file exists or not
-     * @param filename name of the file to search for
-     * @return true if it exists false otherwise
-     */
-    private boolean fileExists(String filename)
-    {
-        boolean exists = true;
-        if(context!= null && filename != null) {
-            File file = context.getFileStreamPath(filename);
-            if (file == null || !file.exists()) {
-                exists = false;
-            }
+    public void removeFromFavourite(Quote quote) {
+        realm.beginTransaction();
+        QuoteRealMObject object = realm.where(QuoteRealMObject.class).equalTo(QuoteRealMObject.ID, quote.getId()).findFirst();
+        if(object != null) {
+            object.deleteFromRealm();
         }
-        else {
-            exists = false;
-        }
-        return exists;
-    }
-
-
-    /**
-     * Read a file and return Serialized Object
-     * @param fileName name of the file to read data from
-     * @return Object read from the file
-     *
-     * @throws FileReadFailedException
-     *
-     */
-    private Object readData(String fileName) throws FileReadFailedException {
-
-        //TODO: Check for serialization vunrabilities
-        synchronized (obj) {
-            ObjectInputStream input = null;
-            Object object = null;
-            if (fileExists(fileName)) {
-                try {
-                    input = new ObjectInputStream(context.openFileInput(fileName));
-                    object = input.readObject();
-                    Log.d(TAG, "Writable object has been loaded from file "+fileName);
-                }
-                catch(Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
-                    throw new FileReadFailedException(e.getMessage());
-                }
-                finally {
-                    try {
-                        if (input != null)
-                            input.close();
-                    } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-                }
-            }
-            return object;
-        }
-    }
-
-    /**
-     * Delete a given file
-     * @param filename name of the file to delete
-     */
-    private void deleteFile(String filename)
-    {
-        if(context != null) {
-            File file = context.getFileStreamPath(filename);
-            if (file != null || file.exists())
-                file.delete();
-        }
-    }
-
-    /**
-     * Writes data to a file
-     * @param data data to write
-     * @param filename name of the file with path
-     */
-    private void writeData(Object data, String filename)
-    {
-        synchronized (obj) {
-            ObjectOutput out = null;
-            deleteFile(filename);
-            try {
-                Log.d(TAG, "Attempting to write Object ");
-                out = new ObjectOutputStream(context.openFileOutput(filename, Context.MODE_PRIVATE));
-                out.writeObject(data);
-                Log.d(TAG, "writableObject written successfully");
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
-            } finally {
-                if (out != null)
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
-                    }
-            }
-        }
+        realm.commitTransaction();
     }
 }

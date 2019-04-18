@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".viewers.favouritecard.FavouriteCardsActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="0dp"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/favourite_quote_activity_title"
+        app:titleTextColor="@color/colorPrimary" />
+
+    <in.arjsna.swipecardlib.SwipeCardView
+        android:id="@+id/quotesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="10dp"
+        app:bottom_swipe_detect="false"
+        app:rotation_degrees="15.5"
+        app:top_swipe_detect="false"
+        tools:context=".CardSwipeActivity" />
+</FrameLayout>

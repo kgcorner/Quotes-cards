@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ShareActivity extends Activity {
+public class ShareActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_FOR_SHARE = 1000;
 
@@ -57,8 +58,6 @@ public class ShareActivity extends Activity {
     @BindView(R.id.txtAuthor)
     TextView txtAuthor;
 
-    @BindView(R.id.imgClose)
-    ImageView imgClose;
 
     @BindView(R.id.btnShare)
     Button btnShare;
@@ -80,6 +79,9 @@ public class ShareActivity extends Activity {
     @BindView(R.id.imgLogo)
     ImageView imgLogo;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
 
     private int[] fonts;
 
@@ -98,12 +100,6 @@ public class ShareActivity extends Activity {
             txtAuthor.setText(quote.getAuthor());
             txtQuote.setText(quote.getQuote());
         }
-        imgClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +128,14 @@ public class ShareActivity extends Activity {
                 changeColor();
             }
         });
+        setSupportActionBar(toolbar);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void changeColor() {
@@ -195,8 +198,9 @@ public class ShareActivity extends Activity {
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
         intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
+        String title = getBaseContext().getResources().getString(R.string.share_quote_dialog_title);
         try {
-            startActivity(Intent.createChooser(intent, "Share Screenshot"));
+            startActivity(Intent.createChooser(intent, title));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }
