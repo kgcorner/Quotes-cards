@@ -4,9 +4,10 @@ import com.kgcorner.vachan.io.StoreModule;
 import com.kgcorner.vachan.services.ServicesModule;
 import com.kgcorner.vachan.viewers.favouritecard.FavouriteCardsActivity;
 import com.kgcorner.vachan.viewers.quotes.fragments.quotes.QuotesListFragment;
-import com.kgcorner.vachan.viewers.quotes.fragments.quotes.QuotesViewerModule;
+import com.kgcorner.vachan.viewers.QuotesViewerModule;
 import com.kgcorner.vachan.viewers.quotes.fragments.topics.TopicViewerModule;
 import com.kgcorner.vachan.viewers.quotes.fragments.topics.TopicsFragment;
+import com.kgcorner.vachan.viewers.quotes.images.ImageChooser;
 import com.kgcorner.vachan.viewers.quotes.viewholder.quotes.QuoteCardAdapter;
 
 import javax.inject.Singleton;
@@ -25,4 +26,5 @@ public interface AppComponent {
     void inject(FavouriteCardsActivity favouriteCardsActivity);
     void inject(TopicsFragment topicsFragment);
     void inject(QuoteCardAdapter quoteCardAdapter);
+    void inject(ImageChooser imageChooser);
 }

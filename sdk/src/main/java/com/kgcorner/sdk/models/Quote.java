@@ -13,6 +13,7 @@ public class Quote implements Serializable {
     private String author;
     private Date dateAdded;
     private int id;
+    private List<String> tags;
 
     /**
      * returns the quote itself
@@ -65,5 +66,13 @@ public class Quote implements Serializable {
         }
         Quote quote = (Quote) obj;
         return id == quote.id;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

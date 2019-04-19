@@ -9,11 +9,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -32,13 +32,15 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.kgcorner.sdk.models.Image;
 import com.kgcorner.sdk.models.Quote;
 import com.kgcorner.vachan.R;
+import com.kgcorner.vachan.viewers.quotes.images.ImageChooser;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,6 +53,8 @@ public class ShareActivity extends AppCompatActivity {
     private static final int PERMISSIONS_FOR_SHARE = 1000;
 
     private static final String TAG = "ShareActivity";
+    public static final int IMAGE_CHOSEN_CODE =  1002;
+    public static final String CHOSEN_IMAGE =  "chosenImage";
 
     @BindView(R.id.txtQuote)
     TextView txtQuote;
@@ -82,6 +86,9 @@ public class ShareActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.imgBack)
+    ImageView imgBack;
+
 
     private int[] fonts;
 
@@ -89,14 +96,19 @@ public class ShareActivity extends AppCompatActivity {
 
     private int activeFont = 0;
 
+    Quote quote = null;
+
+    private Activity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         unbinder = ButterKnife.bind(this);
         Bundle extras = getIntent().getExtras();
+
         if( extras != null) {
-            Quote quote = (Quote) extras.getSerializable("Quote");
+            quote = (Quote) extras.getSerializable("Quote");
             txtAuthor.setText(quote.getAuthor());
             txtQuote.setText(quote.getQuote());
         }
@@ -134,6 +146,22 @@ public class ShareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        imgImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String topic = "";
+                for(String tag : quote.getTags()) {
+                    topic += tag+",";
+                }
+                topic = topic.substring(0, topic.length() -1);
+                Bundle bundle = new Bundle();
+                bundle.putString(ImageChooser.TOPIC, topic);
+                Intent intent = new Intent(v.getContext(), ImageChooser.class);
+                intent.putExtras(bundle);
+                activity.startActivityForResult(intent, IMAGE_CHOSEN_CODE);
             }
         });
     }
@@ -282,4 +310,12 @@ public class ShareActivity extends AppCompatActivity {
                 .show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == IMAGE_CHOSEN_CODE && resultCode == RESULT_OK) {
+            Image choosenImage = (Image) data.getSerializableExtra(CHOSEN_IMAGE);
+            Picasso.with(this).load(choosenImage.getImageUrl()).fit().into(imgBack);
+        }
+    }
 }

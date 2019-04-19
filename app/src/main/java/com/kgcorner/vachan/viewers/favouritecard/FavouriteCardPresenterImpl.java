@@ -12,7 +12,6 @@ public class FavouriteCardPresenterImpl implements FavouriteCardPresenter {
 
     private final StoreInteractor interactor;
 
-    @Inject
     public FavouriteCardPresenterImpl(StoreInteractor interactor) {
 
         this.interactor = interactor;

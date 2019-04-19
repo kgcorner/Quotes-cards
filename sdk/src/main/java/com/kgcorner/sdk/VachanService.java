@@ -1,5 +1,6 @@
 package com.kgcorner.sdk;
 
+import com.kgcorner.sdk.models.Image;
 import com.kgcorner.sdk.models.Topic;
 import com.kgcorner.sdk.models.Quote;
 import java.util.List;
@@ -19,4 +20,7 @@ public interface VachanService {
 
     @GET("/topics")
     Observable<List<Topic>> getTopics();
+
+    @GET("/images")
+    Observable<List<Image>> getImages(@Query("topic") String topics);
 }

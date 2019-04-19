@@ -11,7 +11,7 @@ public class QuotesInteractorImpl implements QuotesInteractor {
 
     private VachanService service;
 
-    QuotesInteractorImpl(VachanService service) {
+    public QuotesInteractorImpl(VachanService service) {
         this.service = service;
     }
 

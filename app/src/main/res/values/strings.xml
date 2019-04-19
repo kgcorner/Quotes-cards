@@ -11,6 +11,7 @@
     <string name="get_more_quote">Fetching more quotes</string>
     <string name="share_quote_dialog_title">Share Quote</string>
     <string name="share_quote_activity_title">Share Quote</string>
+    <string name="choose_image_screen_title">Select Image</string>
     <string name="favourites">Favourite Quotes</string>
     <string name="rate_us">Rate us on Play store</string>
     <string name="credits">Credits</string>
