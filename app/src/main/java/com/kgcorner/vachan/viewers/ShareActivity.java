@@ -156,7 +156,7 @@ public class ShareActivity extends AppCompatActivity {
                 for(String tag : quote.getTags()) {
                     topic += tag+",";
                 }
-                topic = topic.substring(0, topic.length() -1);
+                topic = topic.trim().length() >0 ? topic.substring(0, topic.length() -1): "";
                 Bundle bundle = new Bundle();
                 bundle.putString(ImageChooser.TOPIC, topic);
                 Intent intent = new Intent(v.getContext(), ImageChooser.class);
