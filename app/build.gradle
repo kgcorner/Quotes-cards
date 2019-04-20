@@ -35,7 +35,6 @@ android {
         }
         stage {
             buildConfigField "String", 'API_BASE_URL', "\"${getProperty("local.properties", "stage.url")}\""
-            debuggable true
         }
         release {
             minifyEnabled false
