@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".viewers.quotes.images.ImageChooser"></activity>
+        <activity android:name=".viewers.selectedtopics.CardsOnTopicActivity"></activity>
+        <activity android:name=".viewers.quotes.images.ImageChooser" />
         <activity android:name=".viewers.info.InfoActivities" />
         <activity android:name=".viewers.favouritecard.FavouriteCardsActivity" />
         <activity android:name=".viewers.ShareActivity" />

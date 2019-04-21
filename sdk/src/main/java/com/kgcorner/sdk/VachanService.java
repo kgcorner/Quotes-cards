@@ -15,6 +15,9 @@ public interface VachanService {
     @GET("/quotes")
     Observable<List<Quote>> getQuotes();
 
+    @GET("/quotes")
+    Observable<List<Quote>> getQuotes(@Query("topic") String topic, @Query("page") int page);
+
     @GET("/quotes/{page}")
     Observable<List<Quote>> getQuotes(@Path("page") int page);
 

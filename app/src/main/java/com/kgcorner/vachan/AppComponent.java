@@ -9,6 +9,7 @@ import com.kgcorner.vachan.viewers.quotes.fragments.topics.TopicViewerModule;
 import com.kgcorner.vachan.viewers.quotes.fragments.topics.TopicsFragment;
 import com.kgcorner.vachan.viewers.quotes.images.ImageChooser;
 import com.kgcorner.vachan.viewers.quotes.viewholder.quotes.QuoteCardAdapter;
+import com.kgcorner.vachan.viewers.selectedtopics.CardsOnTopicActivity;
 
 import javax.inject.Singleton;
 
@@ -27,4 +28,6 @@ public interface AppComponent {
     void inject(TopicsFragment topicsFragment);
     void inject(QuoteCardAdapter quoteCardAdapter);
     void inject(ImageChooser imageChooser);
+
+    void inject(CardsOnTopicActivity cardsOnTopicActivity);
 }

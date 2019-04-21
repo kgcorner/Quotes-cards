@@ -12,6 +12,10 @@ import com.kgcorner.vachan.viewers.quotes.images.ImageInteractor;
 import com.kgcorner.vachan.viewers.quotes.images.ImageInteractorImpl;
 import com.kgcorner.vachan.viewers.quotes.images.ImagePresenter;
 import com.kgcorner.vachan.viewers.quotes.images.ImagePresenterImpl;
+import com.kgcorner.vachan.viewers.selectedtopics.CardOnTopicInteractor;
+import com.kgcorner.vachan.viewers.selectedtopics.CardOnTopicInteractorImpl;
+import com.kgcorner.vachan.viewers.selectedtopics.CardOnTopicPresenter;
+import com.kgcorner.vachan.viewers.selectedtopics.CardOnTopicPresenterImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -43,5 +47,15 @@ public abstract class QuotesViewerModule {
     @Provides
     static ImagePresenter provideImagePresenter(ImageInteractor interactor) {
         return new ImagePresenterImpl(interactor);
+    }
+
+    @Provides
+    static CardOnTopicInteractor providesInteractor(VachanService service) {
+        return new CardOnTopicInteractorImpl(service);
+    }
+
+    @Provides
+    static CardOnTopicPresenter providesCardOnTopic(CardOnTopicInteractor interactor) {
+        return new CardOnTopicPresenterImpl(interactor);
     }
 }

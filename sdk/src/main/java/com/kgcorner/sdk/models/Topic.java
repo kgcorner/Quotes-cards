@@ -1,6 +1,8 @@
 package com.kgcorner.sdk.models;
 
-public class Topic {
+import java.io.Serializable;
+
+public class Topic implements Serializable {
     private String name;
     private int id;
     private String imagePath;
