@@ -89,7 +89,6 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
 
     @Override
     public void onImageChoose(Image image) {
-        Toast.makeText(this,"Chosen:"+ image.getImageUrl(), Toast.LENGTH_SHORT).show();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ShareActivity.CHOSEN_IMAGE, image);
         Intent intent = new Intent();
