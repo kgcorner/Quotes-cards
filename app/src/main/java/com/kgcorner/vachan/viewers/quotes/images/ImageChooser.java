@@ -33,6 +33,9 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
     @BindView(R.id.imagesContainer)
     RecyclerView imagesContainer;
 
+    @BindView(R.id.imgLoader)
+    android.widget.ImageView imgLoader;
+
     private Unbinder unbinder;
 
     @Inject
@@ -59,6 +62,7 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
         });
         if(topicInfo != null) {
             String topics = topicInfo.getString(TOPIC);
+            showLoader();
             if(topics != null && topics.trim().length() >0) {
                 presenter.fetchImages(topics);
             } else {
@@ -74,6 +78,7 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
         ImageAdapter adapter = new ImageAdapter(images, this);
         imagesContainer.setLayoutManager(new GridLayoutManager(this, 1));
         imagesContainer.setAdapter(adapter);
+        hideLoader();
     }
 
     @Override
@@ -95,5 +100,15 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
         intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void showLoader() {
+        imgLoader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        imgLoader.setVisibility(View.GONE);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
@@ -31,6 +32,8 @@ public class CardsOnTopicActivity extends AppCompatActivity implements CardOnTop
     @BindView(R.id.cardsContainer)
     SwipeCardView cardContainer;
 
+    @BindView(R.id.imgLoader)
+    ImageView imgLoader;
     private Unbinder unbinder;
 
     private List<Quote> quotes = new ArrayList<>();
@@ -67,6 +70,7 @@ public class CardsOnTopicActivity extends AppCompatActivity implements CardOnTop
             topics = topics.substring(0, topics.length() -1);
         }
         setSupportActionBar(toolbar);
+        showLoader();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,10 +120,21 @@ public class CardsOnTopicActivity extends AppCompatActivity implements CardOnTop
         this.quotes.clear();
         this.quotes.addAll(quotes);
         adapter.notifyDataSetChanged();
+        hideLoader();
     }
 
     @Override
     public void showError(Throwable e) {
 
+    }
+
+    @Override
+    public void showLoader() {
+        imgLoader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        imgLoader.setVisibility(View.GONE);
     }
 }

@@ -20,6 +20,8 @@ public class QuotesPresenterImpl implements QuotesPresenter {
 
     @Override
     public void getQuotes(int page) {
+        if(view!= null)
+            view.showLoader();
         this.interactor.getQuotes(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -27,14 +29,18 @@ public class QuotesPresenterImpl implements QuotesPresenter {
     }
 
     private void onQuotesLoadSuccess(List<Quote> quotes) {
-        if(isViewAttached())
+        if(isViewAttached()) {
             view.loadQuotes(quotes);
+            view.hideLoader();
+        }
     }
 
     private void onQuotesLoadFailure(Throwable e) {
         Log.e(TAG, "onQuotesLoadFailure: " + e.getLocalizedMessage(), e);
         if(isViewAttached())
             view.showError(e);
+        if(view!= null)
+            view.hideLoader();
     }
 
     @Override

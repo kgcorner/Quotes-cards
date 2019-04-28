@@ -14,6 +14,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/noCardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/no_card_layout"
+            android:visibility="gone"></include>
+
         <ImageView
             android:id="@+id/imgMenu"
             android:layout_width="wrap_content"
@@ -34,6 +42,13 @@
             app:rotation_degrees="15.5"
             app:top_swipe_detect="false"
             tools:context=".CardSwipeActivity" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/imgLoader"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:src="@drawable/spinner" />
     </FrameLayout>
 
 </android.support.v4.widget.DrawerLayout>

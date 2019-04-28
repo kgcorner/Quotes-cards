@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.kgcorner.sdk.models.Topic;
 import com.kgcorner.vachan.BaseApplication;
@@ -28,6 +29,11 @@ public class TopicsFragment extends Fragment implements  TopicsView{
     @BindView(R.id.categoryContainer)
     RecyclerView categoryContainer;
     private static final String TAG = "TopicsFragment";
+
+    @BindView(R.id.imgLoader)
+    ImageView imgLoader;
+
+
     private Unbinder unbinder;
 
     private TopicsAdapter adapter;
@@ -53,6 +59,7 @@ public class TopicsFragment extends Fragment implements  TopicsView{
         categoryContainer.setLayoutManager(new GridLayoutManager(getContext(), 2));
         categoryContainer.setAdapter(adapter);
         presenter.setView(this);
+        showLoader();
         presenter.fetchTopics();
         return view;
     }
@@ -61,6 +68,7 @@ public class TopicsFragment extends Fragment implements  TopicsView{
     public void loadTopics(List<Topic> topics) {
         this.topics.addAll(topics);
         this.adapter.notifyDataSetChanged();
+        hideLoader();
     }
 
     @Override
@@ -72,5 +80,15 @@ public class TopicsFragment extends Fragment implements  TopicsView{
     public void onDestroyView() {
         super.onDestroyView();
         this.unbinder.unbind();
+    }
+
+    @Override
+    public void showLoader() {
+        imgLoader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        imgLoader.setVisibility(View.GONE);
     }
 }

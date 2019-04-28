@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
@@ -31,6 +32,12 @@ public class FavouriteCardsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.noCardLayout)
+    View noCardLayout;
+
+    @BindView(R.id.txtNoItem)
+    TextView txtNoItem;
+
     private Unbinder unbinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,13 @@ public class FavouriteCardsActivity extends AppCompatActivity {
         ((BaseApplication)getApplication()).getAppComponent().inject(this);
 
         List<Quote> favQuotes = presenter.getFavCards();
+        if(favQuotes == null || favQuotes.isEmpty()) {
+            noCardLayout.setVisibility(View.VISIBLE);
+            txtNoItem.setText(R.string.no_fav_text);
+        } else {
+            noCardLayout.setVisibility(View.GONE);
+        }
+
 
         QuoteCardAdapter adapter = new QuoteCardAdapter(this,
                 R.layout.quote_card, favQuotes, this);
@@ -70,8 +84,8 @@ public class FavouriteCardsActivity extends AppCompatActivity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                Toast.makeText(quotesContainer.getContext(),
-                        "This is last card", Toast.LENGTH_SHORT ).show();
+                noCardLayout.setVisibility(View.VISIBLE);
+                txtNoItem.setText(R.string.no_more_fav_text);
             }
 
             @Override

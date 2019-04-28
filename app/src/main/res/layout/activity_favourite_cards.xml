@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".viewers.favouritecard.FavouriteCardsActivity">
+
+    <include
+        android:id="@+id/noCardLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/no_card_layout"
+        android:visibility="gone"></include>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -25,4 +33,5 @@
         app:rotation_degrees="15.5"
         app:top_swipe_detect="false"
         tools:context=".CardSwipeActivity" />
+
 </FrameLayout>

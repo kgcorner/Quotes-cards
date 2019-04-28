@@ -20,6 +20,9 @@
     <string name="drawer_open">open</string>
     <string name="packagename">com.kgcorner.vachan</string>
     <string name="favourite_quote_activity_title">Favourite Quotes</string>
+    <string name="no_fav_text">You haven\'t liked any quote yet :(</string>
+    <string name="no_quote_text">Well, you swipped all quotes. We\'ll add more soon :) </string>
+    <string name="no_more_fav_text">You Swipped all favourite cards :). Like some more</string>
 
     <string-array name="nav_drawer_labels">
         <item>@string/favourites</item>

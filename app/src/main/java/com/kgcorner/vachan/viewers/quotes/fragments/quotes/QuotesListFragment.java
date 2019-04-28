@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kgcorner.sdk.models.Quote;
@@ -17,6 +18,7 @@ import com.kgcorner.vachan.R;
 import com.kgcorner.vachan.io.FileStore;
 import com.kgcorner.vachan.viewers.quotes.Drawer;
 import com.kgcorner.vachan.viewers.quotes.viewholder.quotes.QuoteCardAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,15 @@ public class QuotesListFragment extends Fragment implements QuotesView {
 
     @BindView(R.id.imgMenu)
     ImageView imgMenu;
+
+    @BindView(R.id.imgLoader)
+    ImageView imgLoader;
+
+    @BindView(R.id.noCardLayout)
+    View noCardLayout;
+
+    @BindView(R.id.txtNoItem)
+    TextView txtNoItem;
 
     private Unbinder unbinder;
 
@@ -181,8 +192,6 @@ public class QuotesListFragment extends Fragment implements QuotesView {
     public void loadQuotes(List<Quote> quotes) {
         if(quotes != null || quotes.size()>0) {
             this.quotes.addAll(quotes);
-        } else {
-            quotes = new ArrayList<>();
         }
         this.quotesAdapter.notifyDataSetChanged();
         int page = fileStore.getLatestFetchedPage();
@@ -197,10 +206,16 @@ public class QuotesListFragment extends Fragment implements QuotesView {
 
     @Override
     public void loadFavourites(List<Quote> quotes) {
-        quoteContainer.removeAllViews();
-        this.quotes.clear();
-        this.quotes.addAll(quotes);
-        this.quotesAdapter.notifyDataSetChanged();
+        if(quotes != null && !quotes.isEmpty()) {
+            quoteContainer.removeAllViews();
+            this.quotes.clear();
+            this.quotes.addAll(quotes);
+            this.quotesAdapter.notifyDataSetChanged();
+            noCardLayout.setVisibility(View.GONE);
+        } else {
+            noCardLayout.setVisibility(View.VISIBLE);
+            txtNoItem.setText(R.string.no_quote_text);
+        }
     }
 
     @Override
@@ -213,4 +228,15 @@ public class QuotesListFragment extends Fragment implements QuotesView {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void showLoader() {
+        imgLoader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        imgLoader.setVisibility(View.GONE);
+    }
 }
+

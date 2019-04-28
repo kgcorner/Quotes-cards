@@ -20,6 +20,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -315,6 +316,15 @@ public class ShareActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == IMAGE_CHOSEN_CODE && resultCode == RESULT_OK) {
             Image choosenImage = (Image) data.getSerializableExtra(CHOSEN_IMAGE);
+            /*DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int width = dm.widthPixels;
+            int height = dm.heightPixels > 600? dm.heightPixels - 200 : dm.heightPixels;
+
+            Picasso.with(this).load(choosenImage.getImageUrl())
+                    .resize(width,height)
+                    .centerInside()
+                    .into(imgBack);*/
             Picasso.with(this).load(choosenImage.getImageUrl()).fit().into(imgBack);
         }
     }
