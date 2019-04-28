@@ -2,6 +2,8 @@ package com.kgcorner.vachan.viewers.quotes.fragments.quotes;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +68,7 @@ public class QuotesListFragment extends Fragment implements QuotesView {
     private ArrayAdapter<Quote> quotesAdapter = null;
     private FileStore fileStore;
     private boolean firstTimeLoad = true;
+    private View view = null;
 
     private static QuotesListFragment instance;
 
@@ -102,7 +105,7 @@ public class QuotesListFragment extends Fragment implements QuotesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_quotes_list, container, false);
+        view = inflater.inflate(R.layout.fragment_quotes_list, container, false);
         //presenter.getQuotes(fileStore.getLatestFetchedPage());
         unbinder = ButterKnife.bind(this, view);
         quotesAdapter = new QuoteCardAdapter(getContext(), R.layout.quote_card,
@@ -220,7 +223,9 @@ public class QuotesListFragment extends Fragment implements QuotesView {
 
     @Override
     public void showError(Throwable e) {
-        Log.e(TAG, "showError: ", e);
+        Snackbar snackbar = Snackbar.make(view,
+                e.getLocalizedMessage(), BaseTransientBottomBar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     @Override

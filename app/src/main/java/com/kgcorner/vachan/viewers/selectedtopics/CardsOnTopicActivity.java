@@ -1,5 +1,7 @@
 package com.kgcorner.vachan.viewers.selectedtopics;
 
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -125,7 +127,9 @@ public class CardsOnTopicActivity extends AppCompatActivity implements CardOnTop
 
     @Override
     public void showError(Throwable e) {
-
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.parent),
+                e.getLocalizedMessage(), BaseTransientBottomBar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     @Override

@@ -1,10 +1,11 @@
 package com.kgcorner.vachan.viewers.quotes.images;
 
 import android.content.Intent;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import com.kgcorner.sdk.models.Image;
 import com.kgcorner.vachan.BaseApplication;
 import com.kgcorner.vachan.R;
-import com.kgcorner.vachan.viewers.ShareActivity;
+import com.kgcorner.vachan.viewers.share.ShareActivity;
 
 import java.util.List;
 
@@ -83,7 +84,9 @@ public class ImageChooser extends AppCompatActivity implements ImageView {
 
     @Override
     public void showError(Throwable e) {
-        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.parent),
+                e.getLocalizedMessage(), BaseTransientBottomBar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     @Override

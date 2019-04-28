@@ -22,7 +22,7 @@
         <activity android:name=".viewers.quotes.images.ImageChooser" />
         <activity android:name=".viewers.info.InfoActivities" />
         <activity android:name=".viewers.favouritecard.FavouriteCardsActivity" />
-        <activity android:name=".viewers.ShareActivity" />
+        <activity android:name=".viewers.share.ShareActivity" />
         <activity
             android:name=".viewers.quotes.QuotesActivity"
             android:label="@string/title_activity_quotes_list"

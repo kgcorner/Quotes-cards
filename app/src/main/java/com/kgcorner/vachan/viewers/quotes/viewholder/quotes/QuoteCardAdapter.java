@@ -17,7 +17,7 @@ import com.kgcorner.sdk.models.Quote;
 import com.kgcorner.vachan.BaseApplication;
 import com.kgcorner.vachan.R;
 import com.kgcorner.vachan.io.StoreInteractor;
-import com.kgcorner.vachan.viewers.ShareActivity;
+import com.kgcorner.vachan.viewers.share.ShareActivity;
 
 import java.util.List;
 

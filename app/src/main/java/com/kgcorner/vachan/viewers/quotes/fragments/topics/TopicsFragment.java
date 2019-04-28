@@ -1,6 +1,8 @@
 package com.kgcorner.vachan.viewers.quotes.fragments.topics;
 
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +40,7 @@ public class TopicsFragment extends Fragment implements  TopicsView{
 
     private TopicsAdapter adapter;
     private List<Topic> topics = new ArrayList<>();
-
+    private View view = null;
     @Inject
     TopicsPresenter presenter;
 
@@ -53,7 +55,7 @@ public class TopicsFragment extends Fragment implements  TopicsView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.topics_list, container, false);
+        view = inflater.inflate(R.layout.topics_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         this.adapter = new TopicsAdapter(topics);
         categoryContainer.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -73,7 +75,9 @@ public class TopicsFragment extends Fragment implements  TopicsView{
 
     @Override
     public void showError(Throwable e) {
-        Log.e(TAG, "showError: "+e.getLocalizedMessage(), e);
+        Snackbar snackbar = Snackbar.make(view,
+                e.getLocalizedMessage(), BaseTransientBottomBar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.kgcorner.vachan.viewers;
+package com.kgcorner.vachan.viewers.share;
 
 import android.Manifest;
 import android.app.Activity;
