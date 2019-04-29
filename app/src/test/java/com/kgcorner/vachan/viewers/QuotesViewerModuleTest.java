@@ -1,7 +1,8 @@
-package com.kgcorner.vachan.viewers.quotes.fragments.quotes;
+package com.kgcorner.vachan.viewers;
 
 import com.kgcorner.sdk.VachanService;
 import com.kgcorner.vachan.viewers.QuotesViewerModule;
+import com.kgcorner.vachan.viewers.quotes.fragments.quotes.QuotesInteractor;
 
 import org.junit.Assert;
 import org.junit.Test;
