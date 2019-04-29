@@ -72,6 +72,8 @@ public class CardsOnTopicActivity extends AppCompatActivity implements CardOnTop
             topics = topics.substring(0, topics.length() -1);
         }
         setSupportActionBar(toolbar);
+        String title = topic.getName().substring(0,1).toUpperCase()+topic.getName().substring(1);
+        toolbar.setTitle(title);
         showLoader();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
