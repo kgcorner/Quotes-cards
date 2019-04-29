@@ -32,7 +32,7 @@ public class ServiceModuleTest {
         OkHttpClient client = Mockito.mock(OkHttpClient.class);
         Retrofit retrofit = ServicesModule.providesRetrofit(client);
         Assert.assertEquals("Base url is not matching",
-                BuildConfig.API_BASE_URL, retrofit.baseUrl().toString());
+                BuildConfig.API_BASE_URL+"/", retrofit.baseUrl().toString());
         Assert.assertNotNull("No converter factory found", retrofit.converterFactories());
     }
 
