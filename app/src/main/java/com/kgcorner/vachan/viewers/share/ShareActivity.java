@@ -200,7 +200,7 @@ public class ShareActivity extends AppCompatActivity {
     private void startShare() {
         Bitmap bitmap = getBitmapFromView(quoteContainer);
 
-        String name = new SimpleDateFormat("YYYYmmDDHHMMSS").format(new Date())+".jpg";
+        String name = new Date().getTime()+".jpg";
         File storedFile = store(bitmap, name);
         try {
             shareImage(storedFile);
