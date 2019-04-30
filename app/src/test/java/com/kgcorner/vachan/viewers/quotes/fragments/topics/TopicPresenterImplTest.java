@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.powermock.reflect.Whitebox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +36,14 @@ public class TopicPresenterImplTest {
         presenter.setView(view);
         presenter.fetchTopics();
         Mockito.verify(view).loadTopics(topics);
+    }
+
+    @Test
+    public void onTopicLoadFailure() throws Exception {
+        TopicsView view = Mockito.mock(TopicsView.class);
+        presenter.setView(view);
+        RuntimeException e = new RuntimeException();
+        Whitebox.invokeMethod(presenter, "onTopicLoadFailure", e);
+        Mockito.verify(view).showError(e);
     }
 }
