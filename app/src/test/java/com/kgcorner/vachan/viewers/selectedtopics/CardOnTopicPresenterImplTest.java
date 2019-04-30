@@ -56,4 +56,13 @@ public class CardOnTopicPresenterImplTest {
         Object view1 = Whitebox.getInternalState(presenter, "view");
         Assert.assertNotNull("view is null", view1 );
     }
+
+    @Test
+    public void onFailure() throws Exception {
+        CardOnTopicView view = Mockito.mock(CardOnTopicView.class);
+        presenter.setView(view);
+        RuntimeException e = new RuntimeException();
+        Whitebox.invokeMethod(presenter, "onFailure", e);
+        Mockito.verify(view).showError(e);
+    }
 }
