@@ -33,7 +33,7 @@ public class QuoteRealMObject extends RealmObject {
         return author;
     }
 
-    public Quote readlMToQuote() {
+    public Quote realMToQuote() {
         Quote quote = new Quote();
         quote.setId(id);
         quote.setQuote(this.quote);
