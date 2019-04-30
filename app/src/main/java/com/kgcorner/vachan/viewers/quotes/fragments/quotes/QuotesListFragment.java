@@ -17,10 +17,9 @@ import android.widget.Toast;
 import com.kgcorner.sdk.models.Quote;
 import com.kgcorner.vachan.BaseApplication;
 import com.kgcorner.vachan.R;
-import com.kgcorner.vachan.io.FileStore;
+import com.kgcorner.vachan.io.PrefStore;
 import com.kgcorner.vachan.viewers.quotes.Drawer;
 import com.kgcorner.vachan.viewers.quotes.viewholder.quotes.QuoteCardAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class QuotesListFragment extends Fragment implements QuotesView {
 
     private List<Quote> quotes = new ArrayList<>();
     private ArrayAdapter<Quote> quotesAdapter = null;
-    private FileStore fileStore;
+    private PrefStore prefStore;
     private boolean firstTimeLoad = true;
     private View view = null;
 
@@ -93,8 +92,8 @@ public class QuotesListFragment extends Fragment implements QuotesView {
         ((BaseApplication) getActivity().getApplication())
                 .getAppComponent().inject(this);
         presenter.setView(this);
-        if(fileStore == null)
-            fileStore = ((BaseApplication) getActivity().getApplication()).getFileStore();
+        if(prefStore == null)
+            prefStore = ((BaseApplication) getActivity().getApplication()).getPrefStore();
 
     }
 
@@ -106,7 +105,7 @@ public class QuotesListFragment extends Fragment implements QuotesView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_quotes_list, container, false);
-        //presenter.getQuotes(fileStore.getLatestFetchedPage());
+        //presenter.getQuotes(prefStore.getLatestFetchedPage());
         unbinder = ButterKnife.bind(this, view);
         quotesAdapter = new QuoteCardAdapter(getContext(), R.layout.quote_card,
                 quotes, getActivity());
@@ -138,7 +137,7 @@ public class QuotesListFragment extends Fragment implements QuotesView {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 Log.d(TAG, "onAdapterAboutToEmpty: Adapter is about to empty");
-                presenter.getQuotes(fileStore.getLatestFetchedPage());
+                presenter.getQuotes(prefStore.getLatestFetchedPage());
                 String toastText = getContext().getString(R.string.get_more_quote);
                 Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
             }
@@ -197,13 +196,13 @@ public class QuotesListFragment extends Fragment implements QuotesView {
             this.quotes.addAll(quotes);
         }
         this.quotesAdapter.notifyDataSetChanged();
-        int page = fileStore.getLatestFetchedPage();
+        int page = prefStore.getLatestFetchedPage();
         //Page count should not increase on first time load
         if(!firstTimeLoad)
             page++;
         else
             firstTimeLoad = false;
-        fileStore.setLatestFetchPage(page);
+        prefStore.setLatestFetchPage(page);
 
     }
 

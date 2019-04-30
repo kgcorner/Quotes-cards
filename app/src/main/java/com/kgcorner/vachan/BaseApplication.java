@@ -3,7 +3,7 @@ package com.kgcorner.vachan;
 
 import android.app.Application;
 
-import com.kgcorner.vachan.io.FileStore;
+import com.kgcorner.vachan.io.PrefStore;
 
 import io.realm.Realm;
 
@@ -12,13 +12,13 @@ import io.realm.Realm;
  */
 public class BaseApplication extends Application {
     private AppComponent appComponent;
-    private FileStore fileStore;
+    private PrefStore prefStore;
 
     @Override
     public void onCreate() {
         super.onCreate();
         appComponent = createAppComponent();
-        fileStore = FileStore.getInstance(getBaseContext());
+        prefStore = PrefStore.getInstance(getBaseContext());
         initializeRealM();
         registerShutDownHook();
     }
@@ -36,11 +36,11 @@ public class BaseApplication extends Application {
     }
 
     /**
-     * Returns {@link FileStore} instance
+     * Returns {@link PrefStore} instance
      * @return
      */
-    public FileStore getFileStore() {
-        return fileStore;
+    public PrefStore getPrefStore() {
+        return prefStore;
     }
 
     /**
@@ -50,7 +50,7 @@ public class BaseApplication extends Application {
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
             public void run() {
-                fileStore.saveFavQuotes();
+                //prefStore.saveFavQuotes();
             }
         });
     }
