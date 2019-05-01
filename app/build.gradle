@@ -13,6 +13,7 @@ def getProperty(String filename, String propName) {
         }
     } else {
         print(filename + " does not exist!")
+        return "https://vachan.kgcorner.com";
     }
 }
 
