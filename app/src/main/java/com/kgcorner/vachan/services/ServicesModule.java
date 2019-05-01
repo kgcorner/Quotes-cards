@@ -23,7 +23,7 @@ public abstract class ServicesModule {
     public static final int CONNECT_TIMEOUT_IN_MS = 30000;
 
     @Provides
-    static OkHttpClient provideOkHttpClient(RequestInterceptor requestInterceptor) {
+    public static OkHttpClient provideOkHttpClient(RequestInterceptor requestInterceptor) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.addInterceptor(requestInterceptor)
                 .connectTimeout(CONNECT_TIMEOUT_IN_MS, TimeUnit.MILLISECONDS);
@@ -36,7 +36,7 @@ public abstract class ServicesModule {
     }
 
     @Provides
-    static Retrofit providesRetrofit(OkHttpClient client) {
+    public static Retrofit providesRetrofit(OkHttpClient client) {
         return new Retrofit
                 .Builder()
                 .baseUrl(BuildConfig.API_BASE_URL)
@@ -47,7 +47,7 @@ public abstract class ServicesModule {
     }
 
     @Provides
-    static VachanService provideVachanService(Retrofit retrofit) {
+    public static VachanService provideVachanService(Retrofit retrofit) {
         return retrofit.create(VachanService.class);
     }
 }

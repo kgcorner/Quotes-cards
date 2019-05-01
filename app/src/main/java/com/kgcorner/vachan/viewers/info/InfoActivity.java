@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class InfoActivities extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @BindView(R.id.webView)
     WebView webView;

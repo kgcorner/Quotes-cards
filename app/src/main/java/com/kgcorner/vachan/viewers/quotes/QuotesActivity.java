@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.kgcorner.vachan.R;
 import com.kgcorner.vachan.viewers.favouritecard.FavouriteCardsActivity;
-import com.kgcorner.vachan.viewers.info.InfoActivities;
+import com.kgcorner.vachan.viewers.info.InfoActivity;
 import com.kgcorner.vachan.viewers.quotes.fragments.quotes.QuotesListFragment;
 
 import butterknife.BindView;
@@ -143,7 +143,7 @@ public class QuotesActivity extends AppCompatActivity implements
     private void showTerms() {
         Bundle bundle = new Bundle();
         bundle.putString("page", "terms");
-        Intent intent = new Intent(this, InfoActivities.class);
+        Intent intent = new Intent(this, InfoActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -151,7 +151,7 @@ public class QuotesActivity extends AppCompatActivity implements
     private void showCredits() {
         Bundle bundle = new Bundle();
         bundle.putString("page", "credits");
-        Intent intent = new Intent(this, InfoActivities.class);
+        Intent intent = new Intent(this, InfoActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
